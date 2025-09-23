@@ -13,7 +13,9 @@
 			var SIZE = 20;  // default edge length of XTK cubes
 			var GAP = 5;  // arbitrary -- 5 seems to match the assignment image
 
-			var SELECTED_CUBE = 0;
+			var SELECTED_CUBE = 0;  // will hold cube picked by mouse location
+
+			var isCameraRotating = false;
 			
 			window.onload = function() {
 
@@ -42,11 +44,38 @@
 					cubeid = r.pick(event.offsetX, event.offsetY);
 					if (cubeid != 0) {
 						SELECTED_CUBE = r.get(cubeid);
-						console.log(SELECTED_CUBE)
+						//console.log(SELECTED_CUBE)
 					}
-
 				}
 
+				r.onRender = function() {
+					// spin the camera in X direction by 1 degree
+					if (isCameraRotating) {
+						r.camera.rotate([1, 0]);
+					}
+				}
+
+			}
+
+			window.onkeypress = function(e) {
+				if (e.key == 'q') {
+					SELECTED_CUBE.visible = false;
+				}
+				if (e.key == 'w') {
+					SELECTED_CUBE.color = [Math.random(), Math.random(), Math.random()];
+				}
+				if (e.key == 'e') {
+					SELECTED_CUBE.transform.rotateX(10);
+				}
+				if (e.key == 'b') {
+					isCameraRotating = !isCameraRotating;
+				}
+				/*if (e.key == 'o') {
+
+				}
+				/*if (e.key == 'l') {
+
+				}*/
 			}
 
 		</script>
