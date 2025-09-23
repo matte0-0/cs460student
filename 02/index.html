@@ -8,6 +8,8 @@
 
 		<script type="text/javascript" src="https://get.goXTK.com/xtk_edge.js"> </script>
 
+		<script type="text/javascript" src="https://matte0-0.github.io/cs460student/02/loader.js"></script>
+
 		<script>
 
 			var SIZE = 20;  // default edge length of XTK cubes
@@ -61,21 +63,21 @@
 				if (e.key == 'q') {
 					SELECTED_CUBE.visible = false;
 				}
-				if (e.key == 'w') {
+				else if (e.key == 'w') {
 					SELECTED_CUBE.color = [Math.random(), Math.random(), Math.random()];
 				}
-				if (e.key == 'e') {
+				else if (e.key == 'e') {
 					SELECTED_CUBE.transform.rotateX(10);
 				}
-				if (e.key == 'b') {
+				else if (e.key == 'b') {
 					isCameraRotating = !isCameraRotating;
 				}
-				/*if (e.key == 'o') {
-
+				else if (e.key == 'o') {
+					download();
 				}
-				/*if (e.key == 'l') {
-
-				}*/
+				else if (e.key == 'l') {
+					upload("scene.json");
+				}
 			}
 
 		</script>
