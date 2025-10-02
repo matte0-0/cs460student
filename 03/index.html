@@ -28,6 +28,8 @@
 
       var renderer, controls, scene, camera;
 
+      var FLICKERING = false;
+
       window.onload = function() {
 
         // Three.js code goes here
@@ -59,7 +61,7 @@
             controls.enabled = false;
 
             geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
-            material = new THREE.MeshPhongMaterial({ color: 0xff69b4 });
+            material = new THREE.MeshPhongMaterial({ color: 0xff69b4, transparent: true, opacity: 1 });
 
             torusKnot = new THREE.Mesh( geometry, material );
 
@@ -93,6 +95,8 @@
           controls.enabled = true;
           isTorusRecent = false;
 
+          console.log('all scene children', scene.children);
+
         };
 
         renderer.domElement.onmousemove = function( e ){
@@ -113,10 +117,16 @@
               LASTOBJECT.material.color.set( 0xff69b4 );  // hot pink
             };
 
-            console.log('LASTOBJECT.scale', LASTOBJECT.scale);
+            //console.log('LASTOBJECT.scale', LASTOBJECT.scale);
 
           };
 
+        };
+
+        window.onkeypress = function(e) {
+          if (e.key == 'f') {
+            FLICKERING = !FLICKERING;
+          }
         };
 
         // setup lights
@@ -127,24 +137,11 @@
         light.position.set( 10, 100, 10 );
         scene.add( light );
 
-
-        // configure TORUS
-        var geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
-        var material = new THREE.MeshPhongMaterial({ color: 0xf7f020 }); // basic material on the torusKnot wasn't affected by lights and so looked confusing
-
-        var torusKnot = new THREE.Mesh( geometry, material );
-
-        scene.add( torusKnot );
-
-
-
         //
         // The invisible plane
         //
-        geometry = new THREE.PlaneGeometry( 10000, 10000 );
-        material = new THREE.MeshBasicMaterial( {
-          visible: false
-        });
+        var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+        var material = new THREE.MeshBasicMaterial({visible: false});
 
         var invisible_plane = new THREE.Mesh( geometry, material );
 
@@ -152,6 +149,14 @@
         //
         //
         //
+
+        // configure TORUS
+        geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+        material = new THREE.MeshPhongMaterial({ color: 0xf7f020, transparent: true, opacity: 1 }); // basic material on the torusKnot wasn't affected by lights and so looked confusing
+
+        var torusKnot = new THREE.Mesh( geometry, material );
+
+        scene.add( torusKnot );
 
 
 
@@ -166,6 +171,12 @@
       function animate() {
 
         requestAnimationFrame( animate );
+
+        if (FLICKERING) {
+          for (var i=3; i < scene.children.length; i++) {
+            scene.children[i].material.opacity = Math.random();
+          };
+        };
 
         // and here..
         controls.update();
