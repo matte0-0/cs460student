@@ -29,6 +29,7 @@
       var renderer, controls, scene, camera;
 
       var FLICKERING = false;
+      var WIREFRAMES_ON = false;
 
       window.onload = function() {
 
@@ -127,6 +128,12 @@
           if (e.key == 'f') {
             FLICKERING = !FLICKERING;
           }
+          if (e.key == 'w') {
+            WIREFRAMES_ON = !WIREFRAMES_ON;
+            for (var i=4; i < scene.children.length; i++) {
+              scene.children[i].material.wireframe = WIREFRAMES_ON;
+            };
+          }
         };
 
         // setup lights
@@ -157,8 +164,6 @@
         var torusKnot = new THREE.Mesh( geometry, material );
 
         scene.add( torusKnot );
-
-
 
         // interaction
         controls = new OrbitControls( camera, renderer.domElement );
